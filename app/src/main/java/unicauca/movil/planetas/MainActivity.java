@@ -13,11 +13,13 @@ import java.util.List;
 import unicauca.movil.planetas.adapters.PlanetaAdapter;
 import unicauca.movil.planetas.databinding.ActivityMainBinding;
 import unicauca.movil.planetas.models.Planeta;
+import unicauca.movil.planetas.models.PlanetaDao;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     PlanetaAdapter adapter;
+    PlanetaDao dao;
 
 
     @Override
@@ -27,11 +29,15 @@ public class MainActivity extends AppCompatActivity {
         List<Planeta> data = new ArrayList<>();
         adapter = new PlanetaAdapter(getLayoutInflater(), data);
         binding.list.setAdapter(adapter);
+        dao = ((App)getApplication()).session.getPlanetaDao();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        List<Planeta> data = dao.loadAll();
+        adapter.setData(data);
+
     }
 
     @Override
